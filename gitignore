@@ -1,0 +1,82 @@
+ 
+# Python
+ 
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+ 
+# Virtual Environments
+ 
+venv/
+.venv/
+env/
+ENV/
+
+ 
+# Jupyter Notebook
+ 
+.ipynb_checkpoints/
+
+ 
+# IDEs
+ 
+.vscode/
+.idea/
+
+ 
+# macOS
+ 
+.DS_Store
+
+ 
+# Environment Variables
+ 
+.env
+
+ 
+# Logs
+ 
+*.log
+
+ 
+# Python Packaging
+ 
+build/
+dist/
+*.egg-info/
+
+ 
+# Testing
+ 
+.pytest_cache/
+.coverage
+htmlcov/
+
+ 
+# Model Checkpoints
+ 
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+ 
+# Training Outputs
+ 
+runs/
+checkpoints/
+outputs/
+results/
+
+# Cache
+ 
+.cache/
+
+
+# Temporary Files
+
+*.tmp
+*.bak
