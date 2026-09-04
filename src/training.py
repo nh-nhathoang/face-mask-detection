@@ -14,7 +14,7 @@ from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, models, transforms
 
 CROPS_DIR = "../data/crops"
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 NUM_EPOCHS = 15
 LEARNING_RATE = 1e-4
 VAL_SPLIT = 0.2
