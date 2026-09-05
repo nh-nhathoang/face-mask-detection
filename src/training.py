@@ -10,7 +10,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, Subset
+from torch.utils.data import DataLoader, Subset, WeightedRandomSampler
 from torchvision import datasets, models, transforms
 
 CROPS_DIR = "../data/crops"
@@ -63,10 +63,15 @@ def build_dataloaders(crops_dir, batch_size, val_split, seed):
     train_subset = Subset(train_dataset, train_idx)
     val_subset = Subset(val_dataset, val_idx)
 
-    train_loader = DataLoader(train_subset, batch_size=batch_size, shuffle=True)
+    train_targets = [targets[i] for i in train_idx]
+
+    class_counts = np.bincount(train_targets)                                            
+    sample_weights = [1.0 / class_counts[label] for label in train_targets]               
+    sampler = WeightedRandomSampler(sample_weights, num_samples=len(sample_weights), replacement=True)  
+
+    train_loader = DataLoader(train_subset, batch_size=batch_size, sampler=sampler)
     val_loader = DataLoader(val_subset, batch_size=batch_size, shuffle=False)
 
-    train_targets = [targets[i] for i in train_idx]
 
     return train_loader, val_loader, train_dataset.classes, train_targets
 
