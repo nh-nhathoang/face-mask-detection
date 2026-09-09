@@ -14,7 +14,9 @@ from training import (
     SEED,
     BATCH_SIZE,
     CHECKPOINT_PATH,
+    CHECKPOINT_PATH_BINARY,
     build_dataloaders,
+    build_dataloaders_binary,
     build_model,
     get_device,
 )
@@ -69,3 +71,13 @@ def evaluate_model(checkpoint_path=CHECKPOINT_PATH):
         "report": report,
         "confusion_matrix": cm,
     }
+
+def evaluate_model_binary(checkpoint_path=CHECKPOINT_PATH_BINARY):
+    device = get_device()
+    _, val_loader, classes, _, val_paths = build_dataloaders_binary(CROPS_DIR, BATCH_SIZE, VAL_SPLIT, SEED)
+    model = load_trained_model(checkpoint_path, len(classes), device)
+    y_true, y_pred, y_score = get_predictions(model, val_loader, device)
+    report = classification_report(y_true, y_pred, target_names=classes)
+    cm = confusion_matrix(y_true, y_pred)
+    return {"classes": classes, "y_true": y_true, "y_pred": y_pred, "y_score": y_score,
+            "val_paths": val_paths, "report": report, "confusion_matrix": cm}
