@@ -74,8 +74,9 @@ def build_dataloaders(crops_dir, batch_size, val_split, seed):
     train_loader = DataLoader(train_subset, batch_size=batch_size, sampler=sampler)
     val_loader = DataLoader(val_subset, batch_size=batch_size, shuffle=False)
 
+    val_paths = [val_dataset.samples[i][0] for i in val_idx]    #for error analysis
 
-    return train_loader, val_loader, train_dataset.classes, train_targets
+    return train_loader, val_loader, train_dataset.classes, train_targets, val_paths
 
 
 def compute_class_weights(targets, num_classes):
