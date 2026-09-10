@@ -15,7 +15,7 @@ from torchvision import datasets, models, transforms
 
 CROPS_DIR = "../data/crops"
 BATCH_SIZE = 16
-NUM_EPOCHS = 15
+NUM_EPOCHS = 40
 LEARNING_RATE = 1e-4
 VAL_SPLIT = 0.2
 SEED = 42
