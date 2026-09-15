@@ -2,13 +2,12 @@
 Fine-tune a ResNet18 classifier on the cropped face dataset produced by processing.py.
 
 Handles the with_mask / without_mask / mask_weared_incorrect class imbalance
-by weighting the loss inversely to class frequency.
+by oversampling the minority class.
 """
 
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.optim as optim
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset, WeightedRandomSampler, Dataset
 from torchvision import datasets, models, transforms
