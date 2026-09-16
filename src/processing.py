@@ -6,8 +6,6 @@ import cv2
 
 MIN_BOX_SIZE = 10  # px, skip boxes smaller than this in either dimension
 
-# utilities for the face mask detection project.
-
 import xml.etree.ElementTree as ET
 
 CLASSES = ["with_mask", "without_mask", "mask_weared_incorrect"]

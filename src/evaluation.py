@@ -13,8 +13,7 @@ from training import (
     VAL_SPLIT,
     SEED,
     BATCH_SIZE,
-    CHECKPOINT_PATH,
-    CHECKPOINT_PATH_BINARY,
+    CHECKPOINTS,
     build_dataloaders,
     build_dataloaders_binary,
     build_model,
@@ -22,8 +21,8 @@ from training import (
 )
 
 
-def load_trained_model(checkpoint_path, num_classes, device):
-    model = build_model(num_classes)
+def load_trained_model(checkpoint_path, num_classes, device, architecture):
+    model = build_model(num_classes, architecture)
     model.load_state_dict(torch.load(checkpoint_path, map_location=device))
     model.to(device)
     model.eval()
@@ -50,12 +49,12 @@ def get_predictions(model, loader, device):
     return y_true, y_pred, y_score
 
 
-def evaluate_model(checkpoint_path=CHECKPOINT_PATH):
+def evaluate_model(checkpoint_path, architecture):
     """Convenience function for notebook use: returns everything needed to inspect results."""
     device = get_device()
 
     _, val_loader, classes, _, val_paths = build_dataloaders(CROPS_DIR, BATCH_SIZE, VAL_SPLIT, SEED)
-    model = load_trained_model(checkpoint_path, len(classes), device)
+    model = load_trained_model(checkpoint_path, len(classes), device, architecture)
 
     y_true, y_pred, y_score = get_predictions(model, val_loader, device)
 
@@ -72,10 +71,10 @@ def evaluate_model(checkpoint_path=CHECKPOINT_PATH):
         "confusion_matrix": cm,
     }
 
-def evaluate_model_binary(checkpoint_path=CHECKPOINT_PATH_BINARY):
+def evaluate_model_binary(checkpoint_path, architecture):
     device = get_device()
     _, val_loader, classes, _, val_paths = build_dataloaders_binary(CROPS_DIR, BATCH_SIZE, VAL_SPLIT, SEED)
-    model = load_trained_model(checkpoint_path, len(classes), device)
+    model = load_trained_model(checkpoint_path, len(classes), device, architecture)
     y_true, y_pred, y_score = get_predictions(model, val_loader, device)
     report = classification_report(y_true, y_pred, target_names=classes)
     cm = confusion_matrix(y_true, y_pred)

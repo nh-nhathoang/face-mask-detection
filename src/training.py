@@ -18,8 +18,11 @@ NUM_EPOCHS = 40
 LEARNING_RATE = 1e-4
 VAL_SPLIT = 0.2
 SEED = 42
-CHECKPOINT_PATH = "best_model.pth"
-CHECKPOINT_PATH_BINARY = "best_model_binary.pth" # for binary classification 
+CHECKPOINTS = {
+    "ResNet": "../outputs/best_model_resnet.pth",
+    "ResNet_binary": "../outputs/best_model_resnet_binary.pth",
+    "EfficientNet": "../outputs/best_model_efficientnet.pth",
+}
 
 def get_device():
     if torch.backends.mps.is_available():
@@ -85,9 +88,15 @@ def compute_class_weights(targets, num_classes):
     return torch.tensor(weights, dtype=torch.float32)
 
 
-def build_model(num_classes):
-    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
-    model.fc = nn.Linear(model.fc.in_features, num_classes)
+def build_model(num_classes, architecture):
+    if architecture == 'ResNet':
+        model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
+        model.fc = nn.Linear(model.fc.in_features, num_classes)
+    elif architecture == 'EfficientNet':
+        model = models.efficientnet_b0(weights=models.EfficientNet_B0_Weights.DEFAULT)
+        model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
+    else:
+        raise ValueError('Unknown architecture')
     return model
 
 
